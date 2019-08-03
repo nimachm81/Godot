@@ -8,4 +8,6 @@ export_presets.cfg
 .mono/
 
 # exports
+Godot_v*
+Examples/
 */exports/
