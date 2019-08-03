@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Air_Woosh_Underwater.wav-5439f5bc49e4daff89e613b49bfbebfc.sample"
+
+[deps]
+
+source_file="res://art/music/Air_Woosh_Underwater.wav"
+dest_files=[ "res://.import/Air_Woosh_Underwater.wav-5439f5bc49e4daff89e613b49bfbebfc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

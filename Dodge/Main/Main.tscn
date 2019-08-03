@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Main/Main.gd" type="Script" id=1]
+[ext_resource path="res://Mob/Mob.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://art/music/gameover.wav" type="AudioStream" id=4]
+[ext_resource path="res://HUD/HUD.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -0.0815735, -0.350311, 0, 0, 0, 0, -0.37973, -0.0583649, 0, 0, 0, 0, 479.644, 1.37558, 0, 0, 0, 0, 481.054, 722.37, 0, 0, 0, 0, -0.018692, 722.22, 0, 0, 0, 0, -0.0815735, -0.350311 )
+}
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 1 )
+Mob = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 477.0
+margin_bottom = 722.0
+color = Color( 0.933333, 0.658824, 0.658824, 1 )
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 218.039, 148.295 )
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Position2D" parent="."]
+position = Vector2( 240, 450 )
+
+[node name="MobPath" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+position = Vector2( -0.0815735, -0.350311 )
+rotation = 0.0665231
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="HUD" parent="." instance=ExtResource( 5 )]
+
+[node name="FoodTimer" type="Timer" parent="."]
+wait_time = 20.0
+[connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]

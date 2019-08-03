@@ -1,0 +1,103 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Game/Game.gd" type="Script" id=1]
+[ext_resource path="res://assets/tilesheet.png" type="Texture" id=2]
+[ext_resource path="res://Robot/Robot.tscn" type="PackedScene" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+points = PoolVector2Array( 0, 0, 192, 0, 192, 64, 0, 64 )
+
+[sub_resource type="ConvexPolygonShape2D" id=2]
+points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+
+[sub_resource type="TileSet" id=3]
+0/name = "tilesheet.png 0"
+0/texture = ExtResource( 2 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 64, 0, 192, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 1 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+1/name = "tilesheet.png 1"
+1/texture = ExtResource( 2 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 256, 0, 64, 64 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 2 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+1/z_index = 0
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 363.68, 46.4495 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 26
+font_data = ExtResource( 5 )
+
+[node name="Game" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 3 )
+format = 1
+tile_data = PoolIntArray( 458755, 0, 0, 458758, 0, 0, 458761, 0, 0, 458764, 1, 0 )
+
+[node name="Robot" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 0 )
+
+[node name="ForbidenBodyArea" type="Area2D" parent="."]
+editor/display_folded = true
+position = Vector2( 517.431, 398.402 )
+collision_layer = 64
+collision_mask = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ForbidenBodyArea"]
+position = Vector2( -0.389923, 1.39105 )
+shape = SubResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="ForbidenBodyArea"]
+visible = false
+position = Vector2( 2.3327, 1.74952 )
+scale = Vector2( 11.3514, 1.38271 )
+texture = ExtResource( 4 )
+
+[node name="HeadInFATimer" type="Timer" parent="."]
+
+[node name="BodyInFATimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="GameTimer" type="Timer" parent="."]
+wait_time = 20.0
+
+[node name="ScoreLabel" type="Label" parent="."]
+margin_left = 493.55
+margin_top = 12.2774
+margin_right = 533.55
+margin_bottom = 45.2774
+custom_fonts/font = SubResource( 5 )
+text = "0"
+align = 1
+
+[node name="ScoreTimer" type="Timer" parent="."]

@@ -1,0 +1,304 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Robot/Robot.gd" type="Script" id=1]
+[ext_resource path="res://assets/ballBlue_10.png" type="Texture" id=2]
+[ext_resource path="res://assets/Bouncy Platform Long.png" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 19.9436
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 21.1917
+height = 63.0365
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 9.00089
+height = 39.2301
+
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 8.85184
+height = 35.6268
+
+[node name="Robot" type="Node2D"]
+position = Vector2( 493.9, 227.134 )
+script = ExtResource( 1 )
+
+[node name="Head" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 1.10342, -87.491 )
+z_index = 1
+collision_layer = 2
+collision_mask = 3
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Head"]
+position = Vector2( 0.407227, -1.85077 )
+scale = Vector2( 0.246031, 0.235025 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
+position = Vector2( 0, -2 )
+shape = SubResource( 1 )
+
+[node name="Body" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( -0.18248, -3.70168 )
+z_index = 1
+collision_layer = 2
+collision_mask = 15
+mass = 10.0
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Body"]
+position = Vector2( 0.970014, 1.3798 )
+scale = Vector2( 0.134525, 1.95154 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+position = Vector2( 0.968719, -0.380884 )
+shape = SubResource( 2 )
+
+[node name="LegR" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( -1.69832, 88.077 )
+z_index = 2
+collision_layer = 4
+collision_mask = 7
+mass = 5.0
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="LegR"]
+position = Vector2( 1.54486, -1.57471 )
+rotation = 1.57662
+scale = Vector2( 0.165452, 0.329848 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LegR"]
+position = Vector2( 2.1376, 0 )
+shape = SubResource( 3 )
+
+[node name="LegR2" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( -0.698318, 155.077 )
+z_index = 2
+collision_layer = 4
+collision_mask = 7
+mass = 5.0
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="LegR2"]
+position = Vector2( 1.54486, -1.57471 )
+rotation = 1.57662
+scale = Vector2( 0.165452, 0.329848 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LegR2"]
+position = Vector2( 2.1376, 0 )
+shape = SubResource( 3 )
+
+[node name="ArmR" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 33.1538, -44.5799 )
+rotation = 1.56831
+z_index = 2
+collision_layer = 16
+collision_mask = 17
+mass = 2.0
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="ArmR"]
+position = Vector2( 1.54486, -1.57471 )
+rotation = 1.57662
+scale = Vector2( 0.165452, 0.329848 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmR"]
+position = Vector2( 2.1376, 0 )
+shape = SubResource( 3 )
+
+[node name="ElbowR" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 102.154, -45.5799 )
+rotation = 1.56831
+z_index = 2
+collision_layer = 16
+collision_mask = 17
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="ElbowR"]
+position = Vector2( 1.54486, -1.57471 )
+rotation = 1.57662
+scale = Vector2( 0.165452, 0.329848 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ElbowR"]
+position = Vector2( 2.1376, 0 )
+shape = SubResource( 3 )
+
+[node name="LegL" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( -1.57108, 86.1824 )
+collision_layer = 8
+collision_mask = 11
+mass = 5.0
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="LegL"]
+position = Vector2( -0.218658, -0.551758 )
+rotation = -1.57205
+scale = Vector2( 0.164898, 0.317201 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LegL"]
+position = Vector2( -1.52588e-05, -0.56881 )
+shape = SubResource( 4 )
+
+[node name="LegL2" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( -0.57108, 154.182 )
+collision_layer = 8
+collision_mask = 11
+mass = 5.0
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="LegL2"]
+position = Vector2( -0.218658, -0.551758 )
+rotation = -1.57205
+scale = Vector2( 0.164898, 0.317201 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LegL2"]
+position = Vector2( -1.52588e-05, -0.56881 )
+shape = SubResource( 4 )
+
+[node name="ArmL" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 29.649, -58.0984 )
+rotation = 1.03499
+collision_layer = 32
+collision_mask = 33
+mass = 2.0
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="ArmL"]
+position = Vector2( 1.54486, -1.57471 )
+rotation = 1.57662
+scale = Vector2( 0.165452, 0.329848 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmL"]
+position = Vector2( 2.1376, 0 )
+shape = SubResource( 3 )
+
+[node name="ElbowL" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 88.649, -94.0984 )
+rotation = 1.03499
+collision_layer = 32
+collision_mask = 33
+linear_damp = 1.0
+angular_damp = 1.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="ElbowL"]
+position = Vector2( 1.54486, -1.57471 )
+rotation = 1.57662
+scale = Vector2( 0.165452, 0.329848 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ElbowL"]
+position = Vector2( 2.1376, 0 )
+shape = SubResource( 3 )
+
+[node name="ThighJointR" type="PinJoint2D" parent="."]
+position = Vector2( -1.87723, 54.3057 )
+node_a = NodePath("../Body")
+node_b = NodePath("../LegR")
+bias = 0.9
+disable_collision = false
+
+[node name="ThighJointL" type="PinJoint2D" parent="."]
+position = Vector2( -0.702896, 51.4914 )
+node_a = NodePath("../Body")
+node_b = NodePath("../LegL")
+bias = 0.157
+disable_collision = false
+
+[node name="KneeJointR" type="PinJoint2D" parent="."]
+position = Vector2( 0.574768, 119.226 )
+node_a = NodePath("../LegR")
+node_b = NodePath("../LegR2")
+disable_collision = false
+
+[node name="KneeJointL" type="PinJoint2D" parent="."]
+position = Vector2( -0.296936, 119.416 )
+node_a = NodePath("../LegL")
+node_b = NodePath("../LegL2")
+disable_collision = false
+
+[node name="ArmJointR" type="PinJoint2D" parent="."]
+position = Vector2( 3.16174, -38.2818 )
+node_a = NodePath("../Body")
+node_b = NodePath("../ArmR")
+
+[node name="ArmJointL" type="PinJoint2D" parent="."]
+position = Vector2( 3.46014, -42.3543 )
+node_a = NodePath("../Body")
+node_b = NodePath("../ArmL")
+
+[node name="Neck" type="PinJoint2D" parent="."]
+position = Vector2( 1.2818, -66.1284 )
+node_a = NodePath("../Body")
+node_b = NodePath("../Head")
+bias = 0.026
+disable_collision = false
+
+[node name="ElbowJointR" type="PinJoint2D" parent="."]
+position = Vector2( 67.2696, -41.3068 )
+node_a = NodePath("../ArmR")
+node_b = NodePath("../ElbowR")
+bias = 0.07
+disable_collision = false
+
+[node name="ElbowJointL" type="PinJoint2D" parent="."]
+position = Vector2( 60.2628, -74.5984 )
+node_a = NodePath("../ArmL")
+node_b = NodePath("../ElbowL")
+bias = 0.087
+disable_collision = false
