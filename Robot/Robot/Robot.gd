@@ -13,23 +13,40 @@ var tau_max_arm = 200
 
 var headPosition = Vector2()
 
-var numOfBodyparts = 10
+var numOfBodyparts = 12
 var maxNumOfTiles = 20
-var numOfInputs = 5*numOfBodyparts + 2*maxNumOfTiles + 1        ## 5:position(2), linear velocity(2), angular velocity(1) 1: bias
+var numOfInputs = 3*numOfBodyparts + 2*maxNumOfTiles + 2 + 1        ## 3:position(2), angular velocity(1), 2: body's linear velocity, 1: bias
 var numOfOutputs = numOfBodyparts                             ## torque for each body part
 
 var neuralNet = null
+var gravity_scale = 2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
     randomize()
+    SetGravityScale(gravity_scale)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     #moveRandomly()
     #PrintHeadPosition()
+    yield(get_tree().create_timer(0.1), "timeout")
     ApplyNeuralNetOutputs()
-  
+
+func SetGravityScale(scale):
+    $Body.gravity_scale = scale
+    $Head.gravity_scale = scale
+    $ArmR.gravity_scale = scale
+    $ArmL.gravity_scale = scale 
+    $ElbowR.gravity_scale = scale
+    $ElbowL.gravity_scale = scale
+    $LegR.gravity_scale = scale
+    $LegL.gravity_scale = scale
+    $LegR2.gravity_scale = scale
+    $LegL2.gravity_scale = scale 
+    $FootR.gravity_scale = scale
+    $FootL.gravity_scale = scale
+
 func applyRandomForce(bodyPart, f_max, tau_max, torque_only=true):
     if not torque_only:
         var f_x = rand_range(-f_max, f_max)
@@ -61,21 +78,19 @@ func PrintHeadPosition():
 func GetTilePositionsRelativeToBody():
     var pos = position + $Body.position
     return get_parent().GetTileCellsAroundPoint(pos, Vector2(10, 10))
-    
+        
 func GetBodyPartsPositionsInArray():
     return [$Body.position, $Head.position, $ArmR.position, $ArmL.position, 
             $ElbowR.position, $ElbowL.position, $LegR.position, $LegL.position,
-            $LegR2.position, $LegL2.position]
+            $LegR2.position, $LegL2.position, $FootR.position, $FootL.position]
     
 func GetBodyPartsLinearVelocityInArray():
-    return [$Body.linear_velocity, $Head.linear_velocity, $ArmR.linear_velocity, $ArmL.linear_velocity,
-            $ElbowR.linear_velocity, $ElbowL.linear_velocity, $LegR.linear_velocity, $LegL.linear_velocity,
-            $LegR2.linear_velocity, $LegL2.linear_velocity]
+    return [$Body.linear_velocity]
     
 func GetBodyPartsAngularVelocityInArray():
     return [$Body.angular_velocity, $Head.angular_velocity, $ArmR.angular_velocity, $ArmL.angular_velocity,
             $ElbowR.angular_velocity, $ElbowL.angular_velocity, $LegR.angular_velocity, $LegL.angular_velocity,
-            $LegR2.angular_velocity, $LegL2.angular_velocity]
+            $LegR2.angular_velocity, $LegL2.angular_velocity, $FootR.angular_velocity, $FootL.angular_velocity]
     
 func ApplyNeuralNetOutputs():
     var bodyPartsPositions = GetBodyPartsPositionsInArray()
@@ -84,7 +99,7 @@ func ApplyNeuralNetOutputs():
     var tilesRelativePositions = GetTilePositionsRelativeToBody()
     
     assert len(bodyPartsPositions) == numOfBodyparts
-    assert len(bodyPartsLinVelocities) == numOfBodyparts
+    assert len(bodyPartsLinVelocities) == 1
     assert len(bodyPartsAngVelocities) == numOfBodyparts
     
     var inputs = Array()
@@ -96,7 +111,7 @@ func ApplyNeuralNetOutputs():
         inputs[ind_last] = pos.x
         inputs[ind_last + 1] = pos.y
         ind_last += 2
-    for i in range(numOfBodyparts):
+    for i in range(1):
         var vel = bodyPartsLinVelocities[i]
         inputs[ind_last] = vel.x
         inputs[ind_last + 1] = vel.y
@@ -118,7 +133,7 @@ func ApplyNeuralNetOutputs():
             
     assert ind_last == numOfInputs
     
-    var torque_max = 1000
+    var torque_max = 2000*gravity_scale
 
     var outputs = neuralNet.GetOutput(inputs) 
     #print(outputs)
@@ -129,6 +144,8 @@ func ApplyNeuralNetOutputs():
     $LegR2.apply_torque_impulse(outputs[3]*torque_max)
     $LegL.apply_torque_impulse(outputs[4]*torque_max)
     $LegL2.apply_torque_impulse(outputs[5]*torque_max)
+    $FootR.apply_torque_impulse(outputs[2]*torque_max)
+    $FootL.apply_torque_impulse(outputs[2]*torque_max)
     $ArmR.apply_torque_impulse(outputs[6]*torque_max)
     $ElbowR.apply_torque_impulse(outputs[7]*torque_max)
     $ArmL.apply_torque_impulse(outputs[8]*torque_max)

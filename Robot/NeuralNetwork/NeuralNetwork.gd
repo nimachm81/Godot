@@ -79,10 +79,10 @@ func MutateWeights(muRate):
     for elem in topology:
         if elem[3]:
             if rand_range(0, 1) < muRate:
-                elem[2] += rand_range(-1, 1)*elem[2]
+                elem[2] += 0.1*rand_range(-1, 1)*elem[2]
     for i in range(len(nodesVal)):
         if rand_range(0, 1) < muRate:
-            nodesVal[i] += rand_range(-1, 1)*nodesVal[i]
+            nodesVal[i] += 0.1*rand_range(-1, 1)*nodesVal[i]
         
         
 func GetDataInDic():

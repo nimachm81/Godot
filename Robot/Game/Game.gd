@@ -13,7 +13,7 @@ var tileArrById
 
 var bodyInForbidenArea = false
 var headInForbidenArea = false
-var roboStandFitness = 100
+var roboStandFitness = 0
 
 signal gameFinished
 
@@ -21,13 +21,13 @@ signal gameFinished
 func _ready():
     getTileMapParams()
     #PrintTileMapDetails()
-    $Robot.position = Vector2(500, 100)
+    #$Robot.position = Vector2(500, 100)
     
     #var tiles_relative_to_pos = GetTileCellsAroundPoint(Vector2(800, 500), Vector2(2, 3))
     #print("tiles_relative_to_pos: ", tiles_relative_to_pos)
     
-    $ForbidenBodyArea.connect("body_entered", self, "on_forbiden_area_body_entered")
-    $ForbidenBodyArea.connect("body_exited", self, "on_forbiden_area_body_exited")
+    $StandingBodyArea.connect("body_entered", self, "on_standing_area_body_entered")
+    $StandingBodyArea.connect("body_exited", self, "on_standing_area_body_exited")
     $ScoreTimer.connect("timeout", self, "on_score_timeout")
     $GameTimer.connect("timeout", self, "on_game_timeout")
     $HeadInFATimer.connect("timeout", self, "on_head_in_FA_timeout")
@@ -107,7 +107,7 @@ func GetTileCellsAroundPoint(pos, num_of_cells_to_cover):
                         tiles_relative_to_pos.append(tile_pos_rel_0 + Vector2(i, j))
     return tiles_relative_to_pos
     
-func on_forbiden_area_body_entered(body):
+func on_standing_area_body_entered(body):
     if body.name.find("Body") >= 0:
         bodyInForbidenArea = true
         $BodyInFATimer.start()
@@ -116,7 +116,7 @@ func on_forbiden_area_body_entered(body):
         $HeadInFATimer.start()
         
 
-func on_forbiden_area_body_exited(body):
+func on_standing_area_body_exited(body):
     if body.name.find("Body") >= 0:
         bodyInForbidenArea = false
         $BodyInFATimer.stop()
@@ -126,12 +126,12 @@ func on_forbiden_area_body_exited(body):
     
 func on_head_in_FA_timeout():
     if headInForbidenArea:
-        roboStandFitness -= 1
+        roboStandFitness += 1
         #print("roboStandFitness: (head in) ", roboStandFitness)
     
 func on_body_in_FA_timeout():
     if bodyInForbidenArea:
-        roboStandFitness -= 1
+        roboStandFitness += 1
         #print("roboStandFitness (body in): ", roboStandFitness)
     
 func on_score_timeout():

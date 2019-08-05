@@ -4,7 +4,7 @@ var ROBOT = preload("res://Robot/Robot.gd")
 var GAME = preload("res://Game/Game.tscn")
 #var NEURALNET = preload("res://NeuralNetwork/NeuralNetwork.gd")
 
-var numOfGenerations = 2
+var numOfGenerations = 10
 var populationSize = 10
 var population = []
 var fitnessValues = []
@@ -17,7 +17,14 @@ var neuNetNumOfOutputs
 
 var evolutionHistoty
 
+var loadFromFile = true
+var saveToFile = true
+
 signal fitnessesAllSet
+
+var numOfFitnessesCalculated
+var roboPosition = Vector2(500, 420)
+var roboRotation = 80
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,7 +32,7 @@ func _ready():
     SetNeuralNetNumofInOuts()
     var loadFileName = null
     var load_game = File.new()
-    if load_game.file_exists("user://evolution_hist.data"):
+    if loadFromFile and load_game.file_exists("user://evolution_hist.data"):
         loadFileName = "evolution_hist.data"
     EvolvePopulation(loadFileName)
 
@@ -66,10 +73,12 @@ func SetupInitialPopulation():
         neuNet.SetupRandomTopology()
         population[i] = neuNet
         
-        
 func SetupFitnessValues():
     for i in range(populationSize):
         var game = GAME.instance()
+        game.get_node("Robot").neuralNet = population[i]
+        game.get_node("Robot").rotation = roboRotation
+        game.get_node("Robot").position = roboPosition
         add_child(game)
         yield(game, "gameFinished")
         fitnessValues[i] = game.roboStandFitness
@@ -77,19 +86,46 @@ func SetupFitnessValues():
         game.queue_free()
     print("fitnessValues: ", fitnessValues)
     emit_signal("fitnessesAllSet")
-            
-func EvolvePopulation(loadFileName = null):
+    
+func SetupFitnessValuesAllAtOnce():
+    numOfFitnessesCalculated = 0
+    var screenSize = get_viewport_rect().size
+    for i in range(populationSize):
+        RunGameAndGetFitness(i, Vector2(0, i*screenSize.y))
+
+func RunGameAndGetFitness(i, pos):
+    var game = GAME.instance()
+    game.get_node("Robot").neuralNet = population[i]
+    game.get_node("Robot").rotation = roboRotation
+    game.get_node("Robot").position = roboPosition
+    game.position = pos
+    add_child(game)
+    yield(game, "gameFinished")
+    fitnessValues[i] = game.roboStandFitness
+    game.queue_free()
+    numOfFitnessesCalculated += 1
+    if numOfFitnessesCalculated == populationSize:
+        print("fitnessValues: ", fitnessValues)
+        emit_signal("fitnessesAllSet")
+        
+
+func EvolvePopulation(loadFileName = null, oneByOne = true):
     if loadFileName == null:
         evolutionHistoty = []
         SetupInitialPopulation()
     else:
         evolutionHistoty = LoadInitialPopulationFromFile(loadFileName)
     for i in range(numOfGenerations):
-        SetupFitnessValues()
+        print("generation: ", i, "/",  numOfGenerations)
+        if oneByOne:
+            SetupFitnessValues()
+        else:
+            SetupFitnessValuesAllAtOnce()
         yield(self, "fitnessesAllSet")
         evolutionHistoty.append(GetLastGenerationData())
         SelectNextGeneration()
-    SaveEvolutionHistory("evolution_hist.data")
+    if saveToFile:
+        SaveEvolutionHistory("evolution_hist.data")
 
 func GetLastGenerationData():
     var populationData = []
@@ -126,7 +162,7 @@ func SelectNextGeneration():
     for i in range(populationSize):
         if fitnessValues[i] >= fitnessThresh:
             survivors.append(population[i])
-    print("Threashold fitness : ", fitnessThresh, "  n_survive: ", len(survivors) )
+    print("bestFitness: ", bestFitness, "  Threashold fitness : ", fitnessThresh, "  n_survive: ", len(survivors) )
 
     var nextGeneration = [CopyNeuralNet(bestGene)]
     while(len(nextGeneration) < populationSize):

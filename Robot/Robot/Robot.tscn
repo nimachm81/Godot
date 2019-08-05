@@ -1,31 +1,73 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Robot/Robot.gd" type="Script" id=1]
-[ext_resource path="res://assets/ballBlue_10.png" type="Texture" id=2]
-[ext_resource path="res://assets/Bouncy Platform Long.png" type="Texture" id=3]
+[ext_resource path="res://Robot/images/head.png" type="Texture" id=2]
+[ext_resource path="res://Robot/images/body.png" type="Texture" id=3]
+[ext_resource path="res://Robot/images/leg_r.png" type="Texture" id=4]
+[ext_resource path="res://Robot/images/leg2_r.png" type="Texture" id=5]
+[ext_resource path="res://Robot/images/arm_r.png" type="Texture" id=6]
+[ext_resource path="res://Robot/images/elbow_r.png" type="Texture" id=7]
+[ext_resource path="res://Robot/images/leg_l.png" type="Texture" id=8]
+[ext_resource path="res://Robot/images/leg2_l.png" type="Texture" id=9]
+[ext_resource path="res://Robot/images/arm_l.png" type="Texture" id=10]
+[ext_resource path="res://Robot/images/elbow_l.png" type="Texture" id=11]
+[ext_resource path="res://Robot/images/foor_r.png" type="Texture" id=12]
+[ext_resource path="res://Robot/images/foot_l.png" type="Texture" id=13]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 19.9436
+radius = 20.9082
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 21.1917
-height = 63.0365
+radius = 9.32162
+height = 41.8955
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 9.00089
-height = 39.2301
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 9.56302
+height = 52.3505
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 6.55106
+height = 60.3982
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 4.84216
+height = 50.3287
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 2.45572
+height = 43.9463
 
 [sub_resource type="CapsuleShape2D" id=4]
 radius = 8.85184
-height = 35.6268
+height = 53.1252
+
+[sub_resource type="CapsuleShape2D" id=9]
+radius = 6.19839
+height = 59.9355
+
+[sub_resource type="CapsuleShape2D" id=10]
+radius = 4.63553
+height = 48.4562
+
+[sub_resource type="CapsuleShape2D" id=11]
+radius = 2.82993
+height = 43.0106
+
+[sub_resource type="CapsuleShape2D" id=12]
+radius = 7.23837
+height = 16.6413
+
+[sub_resource type="CapsuleShape2D" id=13]
+radius = 6.98209
+height = 17.8041
 
 [node name="Robot" type="Node2D"]
-position = Vector2( 493.9, 227.134 )
+position = Vector2( 487.329, 229.066 )
 script = ExtResource( 1 )
 
 [node name="Head" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( 1.10342, -87.491 )
+position = Vector2( 1.38831, -55.6317 )
 z_index = 1
 collision_layer = 2
 collision_mask = 3
@@ -44,11 +86,11 @@ shape = SubResource( 1 )
 
 [node name="Body" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( -0.18248, -3.70168 )
+position = Vector2( -1.12463, 1.8275 )
 z_index = 1
 collision_layer = 2
 collision_mask = 15
-mass = 10.0
+mass = 5.0
 linear_damp = 1.0
 angular_damp = 1.0
 __meta__ = {
@@ -56,21 +98,24 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="Body"]
-position = Vector2( 0.970014, 1.3798 )
-scale = Vector2( 0.134525, 1.95154 )
+position = Vector2( 2.98254, -0.836564 )
+scale = Vector2( 0.2, 0.213933 )
 texture = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
-position = Vector2( 0.968719, -0.380884 )
+position = Vector2( 1.32721, -1.81483 )
 shape = SubResource( 2 )
 
 [node name="LegR" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( -1.69832, 88.077 )
+position = Vector2( -1.46501, 74.6717 )
 z_index = 2
 collision_layer = 4
 collision_mask = 7
-mass = 5.0
+mass = 3.0
 linear_damp = 1.0
 angular_damp = 1.0
 __meta__ = {
@@ -78,22 +123,21 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="LegR"]
-position = Vector2( 1.54486, -1.57471 )
-rotation = 1.57662
-scale = Vector2( 0.165452, 0.329848 )
-texture = ExtResource( 3 )
+position = Vector2( 1.53566, 0.00561762 )
+scale = Vector2( 0.214, 0.317 )
+texture = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegR"]
 position = Vector2( 2.1376, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 
 [node name="LegR2" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( -0.698318, 155.077 )
+position = Vector2( -0.676559, 155.089 )
 z_index = 2
 collision_layer = 4
 collision_mask = 7
-mass = 5.0
+mass = 2.0
 linear_damp = 1.0
 angular_damp = 1.0
 __meta__ = {
@@ -102,18 +146,16 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="LegR2"]
 position = Vector2( 1.54486, -1.57471 )
-rotation = 1.57662
-scale = Vector2( 0.165452, 0.329848 )
-texture = ExtResource( 3 )
+scale = Vector2( 0.2, 0.317 )
+texture = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegR2"]
 position = Vector2( 2.1376, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 6 )
 
 [node name="ArmR" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( 33.1538, -44.5799 )
-rotation = 1.56831
+position = Vector2( -1.2139, 14.0433 )
 z_index = 2
 collision_layer = 16
 collision_mask = 17
@@ -126,18 +168,16 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="ArmR"]
 position = Vector2( 1.54486, -1.57471 )
-rotation = 1.57662
-scale = Vector2( 0.165452, 0.329848 )
-texture = ExtResource( 3 )
+scale = Vector2( 0.15, 0.3 )
+texture = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ArmR"]
-position = Vector2( 2.1376, 0 )
-shape = SubResource( 3 )
+position = Vector2( 1.04312, -1.14154 )
+shape = SubResource( 7 )
 
 [node name="ElbowR" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( 102.154, -45.5799 )
-rotation = 1.56831
+position = Vector2( -1.08551, 75.0816 )
 z_index = 2
 collision_layer = 16
 collision_mask = 17
@@ -149,20 +189,19 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="ElbowR"]
 position = Vector2( 1.54486, -1.57471 )
-rotation = 1.57662
-scale = Vector2( 0.165452, 0.329848 )
-texture = ExtResource( 3 )
+scale = Vector2( 0.15, 0.3 )
+texture = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ElbowR"]
-position = Vector2( 2.1376, 0 )
-shape = SubResource( 3 )
+position = Vector2( 1.3663, -0.991638 )
+shape = SubResource( 8 )
 
 [node name="LegL" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( -1.57108, 86.1824 )
+position = Vector2( 0.354706, 74.4277 )
 collision_layer = 8
 collision_mask = 11
-mass = 5.0
+mass = 3.0
 linear_damp = 1.0
 angular_damp = 1.0
 __meta__ = {
@@ -170,10 +209,9 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="LegL"]
-position = Vector2( -0.218658, -0.551758 )
-rotation = -1.57205
-scale = Vector2( 0.164898, 0.317201 )
-texture = ExtResource( 3 )
+position = Vector2( -0.218821, -0.681539 )
+scale = Vector2( 0.213987, 0.317201 )
+texture = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegL"]
 position = Vector2( -1.52588e-05, -0.56881 )
@@ -181,10 +219,10 @@ shape = SubResource( 4 )
 
 [node name="LegL2" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( -0.57108, 154.182 )
+position = Vector2( 1.46756, 154.014 )
 collision_layer = 8
 collision_mask = 11
-mass = 5.0
+mass = 2.0
 linear_damp = 1.0
 angular_damp = 1.0
 __meta__ = {
@@ -193,18 +231,16 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="LegL2"]
 position = Vector2( -0.218658, -0.551758 )
-rotation = -1.57205
-scale = Vector2( 0.164898, 0.317201 )
-texture = ExtResource( 3 )
+scale = Vector2( 0.2, 0.317 )
+texture = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegL2"]
 position = Vector2( -1.52588e-05, -0.56881 )
-shape = SubResource( 4 )
+shape = SubResource( 9 )
 
 [node name="ArmL" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( 29.649, -58.0984 )
-rotation = 1.03499
+position = Vector2( -2.55949, 13.8875 )
 collision_layer = 32
 collision_mask = 33
 mass = 2.0
@@ -216,18 +252,16 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="ArmL"]
 position = Vector2( 1.54486, -1.57471 )
-rotation = 1.57662
-scale = Vector2( 0.165452, 0.329848 )
-texture = ExtResource( 3 )
+scale = Vector2( 0.15, 0.3 )
+texture = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ArmL"]
-position = Vector2( 2.1376, 0 )
-shape = SubResource( 3 )
+position = Vector2( 1.14288, -1.94559 )
+shape = SubResource( 10 )
 
 [node name="ElbowL" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( 88.649, -94.0984 )
-rotation = 1.03499
+position = Vector2( -2.785, 73.5513 )
 collision_layer = 32
 collision_mask = 33
 linear_damp = 1.0
@@ -238,67 +272,115 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="ElbowL"]
 position = Vector2( 1.54486, -1.57471 )
-rotation = 1.57662
-scale = Vector2( 0.165452, 0.329848 )
-texture = ExtResource( 3 )
+scale = Vector2( 0.15, 0.3 )
+texture = ExtResource( 11 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ElbowL"]
-position = Vector2( 2.1376, 0 )
-shape = SubResource( 3 )
+position = Vector2( 1.11807, -1.45914 )
+shape = SubResource( 11 )
 
 [node name="ThighJointR" type="PinJoint2D" parent="."]
-position = Vector2( -1.87723, 54.3057 )
+position = Vector2( 0.0211487, 36.5424 )
 node_a = NodePath("../Body")
 node_b = NodePath("../LegR")
 bias = 0.9
 disable_collision = false
 
 [node name="ThighJointL" type="PinJoint2D" parent="."]
-position = Vector2( -0.702896, 51.4914 )
+position = Vector2( 0.0917969, 36.3286 )
 node_a = NodePath("../Body")
 node_b = NodePath("../LegL")
 bias = 0.157
 disable_collision = false
 
 [node name="KneeJointR" type="PinJoint2D" parent="."]
-position = Vector2( 0.574768, 119.226 )
+position = Vector2( 0.937134, 114.13 )
 node_a = NodePath("../LegR")
 node_b = NodePath("../LegR2")
 disable_collision = false
 
 [node name="KneeJointL" type="PinJoint2D" parent="."]
-position = Vector2( -0.296936, 119.416 )
+position = Vector2( 0.585022, 113.561 )
 node_a = NodePath("../LegL")
 node_b = NodePath("../LegL2")
 disable_collision = false
 
 [node name="ArmJointR" type="PinJoint2D" parent="."]
-position = Vector2( 3.16174, -38.2818 )
+position = Vector2( -0.397217, -20.6841 )
 node_a = NodePath("../Body")
 node_b = NodePath("../ArmR")
 
 [node name="ArmJointL" type="PinJoint2D" parent="."]
-position = Vector2( 3.46014, -42.3543 )
+position = Vector2( -1.81967, -20.2899 )
 node_a = NodePath("../Body")
 node_b = NodePath("../ArmL")
 
 [node name="Neck" type="PinJoint2D" parent="."]
-position = Vector2( 1.2818, -66.1284 )
+position = Vector2( -0.193787, -34.269 )
 node_a = NodePath("../Body")
 node_b = NodePath("../Head")
 bias = 0.026
 disable_collision = false
 
 [node name="ElbowJointR" type="PinJoint2D" parent="."]
-position = Vector2( 67.2696, -41.3068 )
+position = Vector2( 0.119904, 47.0044 )
 node_a = NodePath("../ArmR")
 node_b = NodePath("../ElbowR")
 bias = 0.07
 disable_collision = false
 
 [node name="ElbowJointL" type="PinJoint2D" parent="."]
-position = Vector2( 60.2628, -74.5984 )
+position = Vector2( -1.75935, 44.8638 )
 node_a = NodePath("../ArmL")
 node_b = NodePath("../ElbowL")
 bias = 0.087
+disable_collision = false
+
+[node name="FootR" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 9.01431, 202.292 )
+z_index = 2
+collision_layer = 4
+collision_mask = 7
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="FootR"]
+position = Vector2( 0.195801, 0.148926 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 12 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FootR"]
+position = Vector2( 0.0757446, 0.143463 )
+rotation = -1.5708
+shape = SubResource( 12 )
+
+[node name="FootL" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 8.97781, 202.576 )
+collision_layer = 8
+collision_mask = 11
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="FootL"]
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 13 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FootL"]
+rotation = 1.5708
+shape = SubResource( 13 )
+
+[node name="FootJointR" type="PinJoint2D" parent="."]
+position = Vector2( 0.716705, 193.845 )
+node_a = NodePath("../LegR2")
+node_b = NodePath("../FootR")
+disable_collision = false
+
+[node name="FootJointL" type="PinJoint2D" parent="."]
+position = Vector2( 0.289154, 193.933 )
+node_a = NodePath("../LegL2")
+node_b = NodePath("../FootL")
 disable_collision = false
