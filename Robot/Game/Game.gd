@@ -15,21 +15,23 @@ var bodyInForbidenArea = false
 var headInForbidenArea = false
 var roboStandFitness = 100
 
+signal gameFinished
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     getTileMapParams()
     #PrintTileMapDetails()
     $Robot.position = Vector2(500, 100)
     
-    var tiles_relative_to_pos = GetTileCellsAroundPoint(Vector2(800, 500), Vector2(2, 3))
-    print("tiles_relative_to_pos: ", tiles_relative_to_pos)
+    #var tiles_relative_to_pos = GetTileCellsAroundPoint(Vector2(800, 500), Vector2(2, 3))
+    #print("tiles_relative_to_pos: ", tiles_relative_to_pos)
     
     $ForbidenBodyArea.connect("body_entered", self, "on_forbiden_area_body_entered")
     $ForbidenBodyArea.connect("body_exited", self, "on_forbiden_area_body_exited")
     $ScoreTimer.connect("timeout", self, "on_score_timeout")
+    $GameTimer.connect("timeout", self, "on_game_timeout")
     $HeadInFATimer.connect("timeout", self, "on_head_in_FA_timeout")
     $BodyInFATimer.connect("timeout", self, "on_body_in_FA_timeout")
-    $GameTimer.connect("timeout", self, "on_game_timeout")
     
     $GameTimer.start()
     $ScoreLabel.text = str(roboStandFitness)
@@ -78,6 +80,7 @@ func getTileMapParams():
         tileNumOfCells[id] = Vector2(floor(tile_size.x / tileMapCellSize.x), floor(tile_size.y / tileMapCellSize.y))
         assert tileNumOfCells[id] * tileMapCellSize == tile_size
         tileArrById[id] = $TileMap.get_used_cells_by_id(id)
+    """
     print("tileMapCellOrigin: ", tileMapCellOrigin)
     print("tileMapCellSize: ", tileMapCellSize)
     print("tileIds: ", tileIds)
@@ -85,6 +88,7 @@ func getTileMapParams():
     print("tileNumOfCells: ", tileNumOfCells)
     print("tileArr: ", tileArr)
     print("tileArrById: ", tileArrById)
+    """
        
 func GetTileCellsAroundPoint(pos, num_of_cells_to_cover):
     var pos_map = $TileMap.world_to_map(pos)
@@ -123,18 +127,20 @@ func on_forbiden_area_body_exited(body):
 func on_head_in_FA_timeout():
     if headInForbidenArea:
         roboStandFitness -= 1
-        print("roboStandFitness: (head in) ", roboStandFitness)
+        #print("roboStandFitness: (head in) ", roboStandFitness)
     
 func on_body_in_FA_timeout():
     if bodyInForbidenArea:
         roboStandFitness -= 1
-        print("roboStandFitness (body in): ", roboStandFitness)
-    
-func on_game_timeout():
-    $Robot.SaveState(roboStandFitness)
-    $Robot.ResetState()
+        #print("roboStandFitness (body in): ", roboStandFitness)
     
 func on_score_timeout():
     $ScoreLabel.text = str(roboStandFitness)
+    
+func on_game_timeout():
+    print("game finished")
+    emit_signal("gameFinished")
+    
+    
     
     

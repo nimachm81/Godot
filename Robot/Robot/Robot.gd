@@ -27,7 +27,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     #moveRandomly()
-    PrintHeadPosition()
+    #PrintHeadPosition()
     ApplyNeuralNetOutputs()
   
 func applyRandomForce(bodyPart, f_max, tau_max, torque_only=true):
@@ -76,12 +76,6 @@ func GetBodyPartsAngularVelocityInArray():
     return [$Body.angular_velocity, $Head.angular_velocity, $ArmR.angular_velocity, $ArmL.angular_velocity,
             $ElbowR.angular_velocity, $ElbowL.angular_velocity, $LegR.angular_velocity, $LegL.angular_velocity,
             $LegR2.angular_velocity, $LegL2.angular_velocity]
-   
-func SaveState(fitness):
-    pass
-    
-func ResetState():
-    pass
     
 func ApplyNeuralNetOutputs():
     var bodyPartsPositions = GetBodyPartsPositionsInArray()

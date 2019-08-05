@@ -84,12 +84,13 @@ scale = Vector2( 11.3514, 1.38271 )
 texture = ExtResource( 4 )
 
 [node name="HeadInFATimer" type="Timer" parent="."]
+wait_time = 0.3
 
 [node name="BodyInFATimer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 0.5
 
 [node name="GameTimer" type="Timer" parent="."]
-wait_time = 20.0
+wait_time = 10.0
 
 [node name="ScoreLabel" type="Label" parent="."]
 margin_left = 493.55

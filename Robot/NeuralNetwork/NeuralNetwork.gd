@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name NeuralNetwork
+
 var topology
 var numOfNodesInLayers = [5, 3, 2]
 
@@ -7,7 +9,7 @@ var nodesInd
 var nodesVal
 var nodesLayer
 var finalLayerIndStart
-var numOfOutputs
+var numOfOutputs    
 
 func SetupNodeIndices():
     nodesInd = []
@@ -73,3 +75,29 @@ func Sigmmoid(x):
     return 1.0/(1 + exp(-x/10.0))
 
 
+func MutateWeights(muRate):
+    for elem in topology:
+        if elem[3]:
+            if rand_range(0, 1) < muRate:
+                elem[2] += rand_range(-1, 1)*elem[2]
+    for i in range(len(nodesVal)):
+        if rand_range(0, 1) < muRate:
+            nodesVal[i] += rand_range(-1, 1)*nodesVal[i]
+        
+        
+func GetDataInDic():
+    var saveData = {
+        "nodesInd": nodesInd,
+        "nodesVal": nodesVal,
+        "nodesLayer": nodesLayer,
+        "finalLayerIndStart": finalLayerIndStart,
+        "numOfOutputs": numOfOutputs,
+        "numOfNodesInLayers": numOfNodesInLayers,
+        "topology": topology
+    }
+    return saveData
+        
+    
+    
+    
+    
