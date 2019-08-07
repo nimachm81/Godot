@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/368367__thezero__game-over-sound.wav-9c238716217a1ff6fdec82661b395f9c.sample"
+
+[deps]
+
+source_file="res://Main/sounds/368367__thezero__game-over-sound.wav"
+dest_files=[ "res://.import/368367__thezero__game-over-sound.wav-9c238716217a1ff6fdec82661b395f9c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

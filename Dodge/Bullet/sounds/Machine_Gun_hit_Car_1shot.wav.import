@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Machine_Gun_hit_Car_1shot.wav-87fdabf53e241449778538bc72be9b1b.sample"
+
+[deps]
+
+source_file="res://Bullet/sounds/Machine_Gun_hit_Car_1shot.wav"
+dest_files=[ "res://.import/Machine_Gun_hit_Car_1shot.wav-87fdabf53e241449778538bc72be9b1b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

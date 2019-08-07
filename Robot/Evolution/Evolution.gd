@@ -4,7 +4,7 @@ var ROBOT = preload("res://Robot/Robot.gd")
 var GAME = preload("res://Game/Game.tscn")
 #var NEURALNET = preload("res://NeuralNetwork/NeuralNetwork.gd")
 
-var numOfGenerations = 10
+var numOfGenerations = 50
 var populationSize = 10
 var population = []
 var fitnessValues = []
@@ -22,6 +22,7 @@ var saveToFile = true
 
 signal fitnessesAllSet
 
+var numOfHiddenNeuNetLayers = 2
 var numOfFitnessesCalculated
 var roboPosition = Vector2(500, 420)
 var roboRotation = 80
@@ -68,7 +69,11 @@ func SetupInitialPopulation():
         var neuNet = NeuralNetwork.new()
         var n_in = neuNetNumOfInputs
         var n_out = neuNetNumOfOutputs
-        neuNet.numOfNodesInLayers = [n_in, int((n_in + n_out)/2), n_out]
+        if numOfHiddenNeuNetLayers == 1:
+            neuNet.numOfNodesInLayers = [n_in, int((n_in + n_out)/2), n_out]
+        else:
+            assert numOfHiddenNeuNetLayers == 2
+            neuNet.numOfNodesInLayers = [n_in, int((2*n_in + n_out)/3), int((n_in + 2*n_out)/3), n_out]
         neuNet.SetupNodeIndices()
         neuNet.SetupRandomTopology()
         population[i] = neuNet
@@ -172,7 +177,8 @@ func SelectNextGeneration():
                 break
     assert len(nextGeneration) == populationSize
     for i in range(populationSize):
-        nextGeneration[i].MutateWeights(mutationRate)
+        if rand_range(0, 1) > 0.5:
+            nextGeneration[i].MutateWeights(mutationRate)
     population = nextGeneration
     
 func GetDataInDic():

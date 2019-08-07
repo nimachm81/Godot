@@ -54,4 +54,4 @@ func _on_MessageTimer_timeout():
     $MessageLabel.hide()
 
 func reset_health():
-    $Health.IncreaseHealth(110)
+    $Health.IncreaseHealth(110, false)

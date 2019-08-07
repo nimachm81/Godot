@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/gameover.wav-f6899628ffa3653ab31bcb6a4b0370ca.sample"
+path="res://.import/blast.wav-30ec25989b690d53fc37d1359b243d12.sample"
 
 [deps]
 
-source_file="res://art/music/gameover.wav"
-dest_files=[ "res://.import/gameover.wav-f6899628ffa3653ab31bcb6a4b0370ca.sample" ]
+source_file="res://Ball/sounds/blast.wav"
+dest_files=[ "res://.import/blast.wav-30ec25989b690d53fc37d1359b243d12.sample" ]
 
 [params]
 

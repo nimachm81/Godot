@@ -2,14 +2,18 @@ extends Node2D
 
 export (PackedScene) var Mob
 var score
+var totalTime
 
 var screen_size
 
 var FOOD = preload("res://Food/Food.tscn")
+var AMMO = preload("res://Ammo/Ammo.tscn")
 
 var musicOn = true
 var difficultyLevel = 0
 var trailOn = true
+
+var backgroundColor = Color(1, 0.75, 0.8, 1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,6 +32,10 @@ func _ready():
     $Music.set_stream(preload('res://art/music/William_Rosati_No_Work.ogg'))
     
     $FoodTimer.connect("timeout", self, "on_Food_timer_timeout")
+    $AmmoTimer.connect("timeout", self, "on_Ammo_timer_timeout")
+    $BallTimer.connect("timeout", self, "on_BallTimer_timeout")
+    
+    $ColorRect.color = backgroundColor
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -35,15 +43,18 @@ func _ready():
 
 func game_over():
     $ScoreTimer.stop()
-    $MobTimer.stop()
+    $BallTimer.stop()
     $FoodTimer.stop()
+    $AmmoTimer.stop()
     $HUD.show_game_over()
     if musicOn:
         $Music.stop()
     $DeathSound.play()
+    $ColorRect.color = backgroundColor
 
 func new_game():
     score = 0
+    totalTime = 0
     $Player.start($StartPosition.position)
     $StartTimer.start()
     $HUD.update_score(score)
@@ -53,24 +64,24 @@ func new_game():
         $Music.play()
 
 func _on_StartTimer_timeout():
-    $MobTimer.start()
+    $BallTimer.start()
     $ScoreTimer.start()
     $FoodTimer.start()
+    $AmmoTimer.start()
 
 func _on_ScoreTimer_timeout():
-    score += 1
-    $HUD.update_score(score)
+    totalTime += 1
 
-func _on_MobTimer_timeout():
+func on_BallTimer_timeout():
     # Choose a random location on Path2D.
-    $MobPath/MobSpawnLocation.set_offset(randi())
+    $BallPath/BallSpawnLocation.set_offset(randi())
     # Create a Mob instance and add it to the scene.
     var mob = Mob.instance()
     add_child(mob)
     # Set the mob's direction perpendicular to the path direction.
-    var direction = $MobPath/MobSpawnLocation.rotation + PI / 2
+    var direction = $BallPath/BallSpawnLocation.rotation + PI / 2
     # Set the mob's position to a random location.
-    mob.position = $MobPath/MobSpawnLocation.position
+    mob.position = $BallPath/BallSpawnLocation.position
     # Add some randomness to the direction.
     direction += rand_range(-PI / 4, PI / 4)
     mob.rotation = direction
@@ -89,6 +100,17 @@ func on_Food_timer_timeout():
     food.position = Vector2(x, y)
     
     $HUD.connect("start_game", food, "_on_start_game")
+
+func on_Ammo_timer_timeout():
+    var x = rand_range(10, screen_size.x - 10)
+    var y = rand_range(10, screen_size.y - 10)
+    
+    var ammo = AMMO.instance();
+    add_child(ammo)
+    ammo.position = Vector2(x, y)
+    
+    $HUD.connect("start_game", ammo, "_on_start_game")
+
     
 func on_music_toggled(button_pressed):
     print("MusicOnOff pressed. Button state : ", button_pressed)
@@ -106,4 +128,8 @@ func on_difficulty_changed(value):
     difficultyLevel = value
     print("Difficulty value: ", value)    
     assert difficultyLevel >= 0 and difficultyLevel <= 10
-    $MobTimer.wait_time = 2.0/(1.0 + difficultyLevel)
+    $BallTimer.wait_time = 2.0/(1.0 + difficultyLevel)
+
+func IncreaseScore(ds):
+    score += ds
+    $HUD.update_score(score)

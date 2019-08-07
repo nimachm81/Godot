@@ -6,7 +6,7 @@ signal healthZero
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+    pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -15,7 +15,7 @@ func _ready():
 func UpdateHealth():
     $redbar.rect_scale.x = health
         
-func IncreaseHealth(h):
+func IncreaseHealth(h, playSound=true):
     health += h/100.0
     if health > 1:
         health = 1
@@ -23,6 +23,9 @@ func IncreaseHealth(h):
         health = 0
         emit_signal("healthZero")  
     UpdateHealth()
+    if h > 0 and playSound:
+        $HealthIncreaseSound.play()
+    
     
 func _on_Player_hit():
     print("Health: decreasing")
