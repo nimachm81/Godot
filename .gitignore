@@ -7,7 +7,12 @@ export_presets.cfg
 # Mono-specific ignores
 .mono/
 
-# exports
+# Godot binary
 Godot_v*
+
+# examples and exports
 Examples/
 */exports/
+
+# AdMob 
+AdMob/
