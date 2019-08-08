@@ -8,7 +8,7 @@
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -0.0815735, -0.350311, 0, 0, 0, 0, -0.37973, -0.0583649, 0, 0, 0, 0, 479.644, 1.37558, 0, 0, 0, 0, 481.054, 722.37, 0, 0, 0, 0, -0.018692, 722.22, 0, 0, 0, 0, -0.0815735, -0.350311 )
+"points": PoolVector2Array( 0, 0, 0, 0, -0.0815735, -0.350311, 0, 0, 0, 0, -0.37973, -0.0583649, 0, 0, 0, 0, 479.644, 1.37558, 0, 0, 0, 0, 477.642, 799.231, 0, 0, 0, 0, 0.448898, 799.83, 0, 0, 0, 0, -0.0815735, -0.350311 )
 }
 
 [node name="Main" type="Node2D"]
@@ -17,7 +17,7 @@ Mob = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 477.0
-margin_bottom = 722.0
+margin_bottom = 799.0
 color = Color( 0.933333, 0.658824, 0.658824, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]

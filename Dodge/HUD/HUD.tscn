@@ -48,8 +48,8 @@ align = 1
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_top = -215.0
-margin_bottom = -56.0
+margin_top = -238.0
+margin_bottom = -79.0
 custom_fonts/font = SubResource( 2 )
 text = "Dodge & Shoot
 the Balls!"
@@ -77,49 +77,49 @@ position = Vector2( 290.917, 19.5954 )
 
 [node name="LevelLabel" type="Label" parent="."]
 margin_left = 111.736
-margin_top = 370.985
-margin_right = 193.736
-margin_bottom = 406.985
+margin_top = 347.985
+margin_right = 228.736
+margin_bottom = 383.985
 custom_fonts/font = SubResource( 6 )
 text = "Difficulty"
 
 [node name="MusicLabel" type="Label" parent="."]
 margin_left = 111.794
-margin_top = 422.0
+margin_top = 399.0
 margin_right = 206.794
-margin_bottom = 456.0
+margin_bottom = 433.0
 custom_fonts/font = SubResource( 7 )
 text = "Music "
 
 [node name="TrailLabel" type="Label" parent="."]
 margin_left = 111.794
-margin_top = 469.0
+margin_top = 446.0
 margin_right = 206.794
-margin_bottom = 503.0
+margin_bottom = 480.0
 custom_fonts/font = SubResource( 7 )
 text = "Trail"
 
 [node name="DifficultySlider" type="HSlider" parent="."]
 margin_left = 253.0
-margin_top = 380.985
+margin_top = 357.985
 margin_right = 407.0
-margin_bottom = 396.985
+margin_bottom = 373.985
 max_value = 10.0
 tick_count = 6
 ticks_on_borders = true
 
 [node name="MusicOnOffButton" type="CheckButton" parent="."]
 margin_left = 246.726
-margin_top = 418.997
+margin_top = 395.997
 margin_right = 322.726
-margin_bottom = 458.997
+margin_bottom = 435.997
 pressed = true
 
 [node name="TrailOnOffButton" type="CheckButton" parent="."]
 margin_left = 248.416
-margin_top = 464.222
+margin_top = 441.222
 margin_right = 324.416
-margin_bottom = 504.222
+margin_bottom = 481.222
 pressed = true
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
