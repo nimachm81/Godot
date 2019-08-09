@@ -9,12 +9,21 @@ var rotation_speed = 10;
 var objtype_id = 1
 var ballColor
 
+var sprieScale_0 = 0.2
+var CollisionRadius_0 = 13
+var visibilityScale_0 = 1.349 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     #set_continuous_collision_detection_mode(1)
     #contact_monitor = true
     #contacts_reported = 2
     #connect("body_entered", self, "_on_body_entered")
+    
+    $Sprite.scale = Vector2(sprieScale_0, sprieScale_0) * Globals.gameScale
+    $CollisionShape2D.shape.radius = CollisionRadius_0 * Globals.gameScale
+    $Visibility.scale = Vector2(visibilityScale_0, visibilityScale_0) * Globals.gameScale
+    
     ballColor = randi() % mob_types.size()
     $Sprite.texture = load("res://Ball/images/" + mob_types[ballColor] + ".png")
     $RotationTimer.connect("timeout", self, "on_rotation_timedout")

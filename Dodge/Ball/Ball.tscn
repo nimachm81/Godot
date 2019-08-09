@@ -2,7 +2,6 @@
 
 [ext_resource path="res://Ball/Ball.gd" type="Script" id=1]
 
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 13.1266
 
@@ -19,7 +18,6 @@ __meta__ = {
 scale = Vector2( 0.2, 0.2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.5708
 shape = SubResource( 1 )
 __meta__ = {
 "_edit_group_": true

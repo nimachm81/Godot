@@ -5,7 +5,9 @@ signal start_game
 # Called when the node enters the scene tree for the first time.
 func _ready():
     get_node("/root/Main/Player").connect("hit", $Health, "_on_Player_hit")
-    pass
+    $HBox/VBox_R/SizeSlider.max_value = Globals.maxSize
+    $HBox/VBox_R/SizeSlider.value = Globals.maxSize*3.0/5
+    #$HBox/VBox_R/SizeSlider.emit_signal("value_changed")
     
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -16,6 +18,10 @@ func show_message(text):
     $MessageLabel.show()
     $MessageTimer.start()
 
+func AdjustBasedOnNewPort(gameSize, origin):
+    $ScoreLabel.rect_position = origin
+    $Health.position.x = origin.x + gameSize.x - $Health.get_node("background").rect_size.x - 10
+    $Health.position.y = origin.y + 10
 
 func show_game_over():
     show_message("Game Over")
@@ -34,21 +40,11 @@ func _on_StartButton_pressed():
 
 func HideElementsAtGameStart():
     $StartButton.hide()
-    $LevelLabel.hide()
-    $MusicLabel.hide()
-    $TrailLabel.hide()
-    $MusicOnOffButton.hide()
-    $DifficultySlider.hide()
-    $TrailOnOffButton.hide()
+    $HBox.hide()
     
 func ShowElementsAtGameOver():
     $StartButton.show()
-    $LevelLabel.show()
-    $MusicLabel.show()
-    $TrailLabel.show()
-    $MusicOnOffButton.show()
-    $DifficultySlider.show()    
-    $TrailOnOffButton.show()
+    $HBox.show()
 
 func _on_MessageTimer_timeout():
     $MessageLabel.hide()
