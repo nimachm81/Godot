@@ -16,9 +16,10 @@ var trailOn = true
 var backgroundColor = Color(1, 0.75, 0.8, 1)
 
 var showAds = true
-var ad_isReal = false
+var ad_isReal = true
 var ad_isOnTop = true
-var ad_BannerId = "ca-app-pub-3940256099942544/6300978111"
+#var ad_BannerId = "ca-app-pub-3940256099942544/6300978111"    ## test id
+var ad_BannerId = "ca-app-pub-7855672814938664/5666665624"    ## shootball id
 var admob
 
 # Called when the node enters the scene tree for the first time.
@@ -72,11 +73,11 @@ func _on_admob_ad_loaded():
         var banner_width = admob.getBannerWidth()
         print("Banner height: ", banner_height)
         print("Banner width: ", banner_width)
-        
+
         var device_size = OS.get_window_size()
         var ratio_x = screen_size.x / device_size.x
         var ratio_y = screen_size.y / device_size.y
-        
+
         var banner_height_adjusted = banner_height * ratio_y
         var banner_width_adjusted = banner_width * ratio_x
         print("Banner height adjusted: ", banner_height_adjusted)
@@ -84,12 +85,12 @@ func _on_admob_ad_loaded():
 
         var screen_size_cut = Vector2(screen_size.x, screen_size.y - banner_height_adjusted)
         SetGamePort(screen_size_cut, Vector2(0, banner_height_adjusted))
-        
+
 
 func _on_admob_network_error():
     print("admob network error")
     pass
-    
+
 func _on_admob_banner_failed_to_load():
     print("admob banner failed to load")
     pass
