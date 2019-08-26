@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/391539__mativve__electro-win-sound.wav-ed41d1c1f470900729687cbbe0fa676d.sample"
+
+[deps]
+
+source_file="res://Game/sound/391539__mativve__electro-win-sound.wav"
+dest_files=[ "res://.import/391539__mativve__electro-win-sound.wav-ed41d1c1f470900729687cbbe0fa676d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -16,7 +16,8 @@ func _ready():
 
 func SetCellNumber(num):
     cell_number = num
-    text = str(num)
+    if cell_number != 0:
+        text = str(num)
 
 func SetRightCell(num):
     cell_right = num

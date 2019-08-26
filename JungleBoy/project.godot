@@ -13,22 +13,10 @@ _global_script_class_icons={
 
 }
 
-[android]
-
-modules="org/godotengine/godot/GodotAdMob"
-
 [application]
 
-config/name="SortNumbers"
-run/main_scene="res://Game/Game.tscn"
+config/name="JungleBoy"
 config/icon="res://icon.png"
-
-[display]
-
-window/size/width=400
-window/handheld/orientation="portrait"
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
 
 [rendering]
 

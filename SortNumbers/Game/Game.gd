@@ -20,6 +20,8 @@ var gameStarted = false
 signal playerWon
 var numberOfMoves = 0
 
+var coloredButtons = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     randomize()
@@ -32,6 +34,10 @@ func _ready():
     $ResizeCheckButton.connect("toggled", self, "on_resize_onoff_toggled") 
     connect("playerWon", self, "on_player_won")
     
+    $ShuffleConfirmationDialog.dialog_text = ""
+    $ShuffleConfirmationDialog.get_node("RichTextLabel").text = "Confirm shuffle?\n"
+    $ShuffleConfirmationDialog.window_title = "Shuffle"
+
     var shufDial_x0 = screenSize.x/2 - $ShuffleConfirmationDialog.rect_size.x/2
     var shufDial_y0 = screenSize.y/2 - $ShuffleConfirmationDialog.rect_size.y/2
     $ShuffleConfirmationDialog.rect_position = Vector2(shufDial_x0, shufDial_y0)
@@ -49,9 +55,10 @@ func AdjustSize():
     var pBar_y0 = y0 -  (n_y - 1) * butSize - $TextureProgress.rect_size.y - 20
     $TextureProgress.rect_position = Vector2(pBar_x0, pBar_y0)
     
-    #var slider_x0 = screenSize.x/2 - $SizeSlider.rect_size.x/2
-    #var slider_y0 = y0 + butSize + 10
-    #$SizeSlider.rect_position = Vector2(slider_x0, slider_y0)
+    var slider_x0 = x0 #screenSize.x/2 - $SizeSlider.rect_size.x/2
+    $ResizeCheckButton.rect_position.y = y0 + butSize + 10
+    $SizeSlider.rect_position.y = $ResizeCheckButton.rect_position.y + int(($ResizeCheckButton.rect_size.y - $SizeSlider.rect_size.y)/2)
+    $ShuffleButton.rect_position.y = $ResizeCheckButton.rect_position.y + $ResizeCheckButton.rect_size.y + 20
         
 
 func InitializeCells(n_x_, n_y_):
@@ -63,6 +70,13 @@ func InitializeCells(n_x_, n_y_):
     
     AdjustSize()
     
+    var but_color = {}
+    for j in range(1, n_y + 1):
+        but_color[j] = Color(rand_range(0, 0.5), rand_range(0, 0.5), rand_range(0, 0.5), 1)
+        
+        if but_color[j][0] + but_color[j][1] + but_color[j][2] > 1.4:
+            but_color[j][randi()%3] = rand_range(0, 0.3)
+
     for i in range(1, n_x + 1):
         for j in range(1, n_y + 1):
             var but = CELL.instance()
@@ -82,8 +96,29 @@ func InitializeCells(n_x_, n_y_):
             
             but.add_color_override("font_color_pressed", Color(1.0, 0.0, 0.0))
             
+            if coloredButtons:
+                var theme = Theme.new()
+                theme.copy_default_theme()
+                theme.set_stylebox("normal", "Button", StyleBoxFlat.new())
+                theme.get_stylebox("normal", "Button").bg_color = but_color[j]
+                theme.get_stylebox("normal", "Button").border_width_left = 1
+                theme.get_stylebox("normal", "Button").border_width_right = 1
+                theme.get_stylebox("normal", "Button").border_width_top = 1
+                theme.get_stylebox("normal", "Button").border_width_bottom = 1
+                theme.get_stylebox("normal", "Button").border_color = Color(0, 0, 0, 1)
+                theme.set_stylebox("focus", "Button", StyleBoxFlat.new())
+                theme.get_stylebox("focus", "Button").bg_color = but_color[j]
+                
+                if i == n_x and j == n_y:
+                    theme.get_stylebox("normal", "Button").bg_color = Color(1, 1, 1, 1) 
+                    theme.get_stylebox("focus", "Button").bg_color = Color(1, 1, 1, 1) 
+                    theme.set_stylebox("hover", "Button", StyleBoxFlat.new())
+                    theme.get_stylebox("hover", "Button").bg_color = Color(1, 1, 1, 1) 
+                but.theme = theme
+                        
             if i == n_x and j == n_y:
-                but.visible = false
+                #but.visible = false
+                pass
             else:
                 but.connect("cell_wants_to_move", self, "on_cell_ready_to_move")
                 
@@ -214,8 +249,11 @@ func SwapCells(num_1, num_2):
 func Shuffle():
     var but_0 = cells[cellIndices[0]]
     
+    SetProgress(false)
+    
     var i = 0
-    while $TextureProgress.value > 10 and i < 20000:
+    var min_iter = 20
+    while i < 10000:
         var dir = randi()%4
         #print(dir)
         if dir == 0 and but_0.cell_left > 0:
@@ -228,6 +266,9 @@ func Shuffle():
             SwapCells(0, but_0.cell_up)
         SetProgress(false)
         i += 1
+        
+        if $TextureProgress.value < 10 and i > min_iter:
+            break
 
     gameStarted = true
     numberOfMoves = 0    
@@ -263,8 +304,12 @@ func on_resize_onoff_toggled(pressed):
 func on_player_won():
     print("player won!")
     if gameStarted:
+        $WinSound.play()
+        gameStarted = false
+
         var dialog = POPUPDIALOG.instance()
-        dialog.dialog_text = "Awsome job! \nNumber of moves: " + str(numberOfMoves) + "\n"
+        dialog.dialog_text = ""
+        dialog.get_node("RichTextLabel").text = "Awsome job! \nNumber of moves: " + str(numberOfMoves) + "\n"
         dialog.window_title = "Game Complete"
 
         var dial_x0 = screenSize.x/2 - dialog.rect_size.x/2
@@ -275,8 +320,7 @@ func on_player_won():
         dialog.show_modal(true)
         yield(get_tree().create_timer(10), "timeout")
         dialog.queue_free()
-        gameStarted = false
-
+        
 func show_start_dialog__():
     var dialog = STARTUPDIALOG.instance()
     add_child(dialog)
@@ -286,7 +330,8 @@ func show_start_dialog__():
 
 func show_start_dialog():
     var dialog = POPUPDIALOG.instance()
-    dialog.dialog_text = "Slide the cells in the empty spot \nto sort them out!\n"
+    dialog.dialog_text = ""
+    dialog.get_node("RichTextLabel").text = "Slide the cells to the white spot to sort them out!\n"
     dialog.window_title = "instructions"
 
     var dial_x0 = screenSize.x/2 - dialog.rect_size.x/2

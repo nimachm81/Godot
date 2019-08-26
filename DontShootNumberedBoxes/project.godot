@@ -13,22 +13,36 @@ _global_script_class_icons={
 
 }
 
-[android]
-
-modules="org/godotengine/godot/GodotAdMob"
-
 [application]
 
-config/name="SortNumbers"
+config/name="DontShootNumberedBoxes"
 run/main_scene="res://Game/Game.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Globals="*res://Globals.gd"
+
 [display]
 
-window/size/width=400
+window/size/width=600
+window/size/height=900
 window/handheld/orientation="portrait"
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[layer_names]
+
+2d_physics/layer_1="no_ball"
+2d_physics/layer_2="ball"
+
+[physics]
+
+common/physics_fps=40
 
 [rendering]
 
