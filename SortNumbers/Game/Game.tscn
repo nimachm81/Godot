@@ -1,16 +1,20 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Game/Game.gd" type="Script" id=1]
 [ext_resource path="res://Game/images/energy_bar_bg.png" type="Texture" id=2]
 [ext_resource path="res://Game/images/energy_bar_fill.png" type="Texture" id=3]
-[ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://PopupDialog/PopupDialog.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Game/sound/440619__jobhrrfs__chipzz-ai.wav" type="AudioStream" id=6]
-[ext_resource path="res://Game/sound/391539__mativve__electro-win-sound.wav" type="AudioStream" id=7]
+[ext_resource path="res://Game/sound/440619__jobhrrfs__chipzz-ai.wav" type="AudioStream" id=4]
+[ext_resource path="res://Game/sound/391539__mativve__electro-win-sound.wav" type="AudioStream" id=5]
+[ext_resource path="res://Game/images/shuffle_icon.png" type="Texture" id=6]
+[ext_resource path="res://Game/images/settings_black.png" type="Texture" id=7]
+[ext_resource path="res://Game/images/trophy.3stars.png" type="Texture" id=8]
+[ext_resource path="res://Game/images/hand-pointer.png" type="Texture" id=9]
 
-[sub_resource type="DynamicFont" id=1]
-size = 19
-font_data = ExtResource( 4 )
+[sub_resource type="CircleShape2D" id=1]
+radius = 17.2068
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 16.7913
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
@@ -24,38 +28,65 @@ value = 50.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
 
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureProgress"]
+margin_left = 77.0
+margin_top = 13.0
+margin_right = 172.0
+margin_bottom = 29.0
+text = "2"
+scroll_active = false
+
 [node name="SizeSlider" type="HSlider" parent="."]
-margin_left = 103.0
+margin_left = 83.0
 margin_top = 516.0
-margin_right = 370.0
+margin_right = 315.0
 margin_bottom = 532.0
 focus_mode = 0
 min_value = 2.0
 max_value = 10.0
 value = 3.0
-editable = false
 tick_count = 9
 ticks_on_borders = true
 focus_mode = 0
 
-[node name="ShuffleButton" type="Button" parent="."]
-margin_left = 30.0
-margin_top = 546.0
-margin_right = 370.0
-margin_bottom = 595.0
-custom_fonts/font = SubResource( 1 )
-text = "shuffle"
-
-[node name="ShuffleConfirmationDialog" parent="." instance=ExtResource( 5 )]
-
-[node name="ResizeCheckButton" type="CheckButton" parent="."]
-margin_left = 21.327
-margin_top = 503.864
-margin_right = 97.327
-margin_bottom = 543.864
-
 [node name="ChipSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
+stream = ExtResource( 4 )
 
 [node name="WinSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource( 5 )
+
+[node name="ShuffleArea2D" type="Area2D" parent="."]
+position = Vector2( 352.894, 523.438 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="ShuffleArea2D"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShuffleArea2D"]
+shape = SubResource( 1 )
+
+[node name="SettingsArea2D" type="Area2D" parent="."]
+position = Vector2( 45.7614, 525.921 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="SettingsArea2D"]
+texture = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SettingsArea2D"]
+shape = SubResource( 2 )
+
+[node name="TrophySprite" type="Sprite" parent="."]
+position = Vector2( 204.314, 258.427 )
+z_index = 1
+texture = ExtResource( 8 )
+
+[node name="HandSprite" type="Sprite" parent="."]
+position = Vector2( 44.3214, 573.961 )
+texture = ExtResource( 9 )
+
+[node name="HandTimer" type="Timer" parent="."]
+wait_time = 0.5

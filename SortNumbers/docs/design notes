@@ -1,0 +1,3 @@
+- add a user training screen and save a confirmation on user:// once the user has passed training
+- add a settings button and hide/show the sliderbar and other settings when it is clicked on
+- remove the dialog boxes and use a fancier font (maybe just richtextlabel switched visible/invisible)

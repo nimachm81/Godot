@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://MoveArrow/MoveArrow.gd" type="Script" id=1]
+
+[node name="MoveArrow" type="Sprite"]
+script = ExtResource( 1 )
+
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="BlinkTimer" type="Timer" parent="."]
+wait_time = 0.5

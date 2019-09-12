@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Body/Body.gd" type="Script" id=1]
+[ext_resource path="res://Body/images/torso.png" type="Texture" id=2]
+[ext_resource path="res://Body/images/arm.png" type="Texture" id=3]
+[ext_resource path="res://Body/images/hand.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 19.478, 33.2444 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 25.6098, 5.79739 )
+
+[node name="Body" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource( 1 )
+
+[node name="TorsoSprite" type="Sprite" parent="."]
+position = Vector2( 0.25272, 0 )
+texture = ExtResource( 2 )
+
+[node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="ArmSprite" type="Sprite" parent="."]
+position = Vector2( -63.5064, -47.6279 )
+texture = ExtResource( 3 )
+
+[node name="HandSprite" type="Sprite" parent="."]
+position = Vector2( 1.45995, -49.3462 )
+z_index = 1
+texture = ExtResource( 4 )
+
+[node name="LegCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.291992, 39.3106 )
+shape = SubResource( 2 )

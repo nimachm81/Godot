@@ -3,6 +3,7 @@ extends Node2D
 var CELL = preload("res://Cell/Cell.tscn")
 var POPUPDIALOG = preload("res://PopupDialog/PopupDialog.tscn")
 var STARTUPDIALOG = preload("res://StartDialog/StartupScreen.tscn")
+var MOVEHELPER = preload("res://MoveArrow/MoveArrow.tscn")
 
 var n_x = 10
 var n_y = 10
@@ -21,6 +22,12 @@ signal playerWon
 var numberOfMoves = 0
 
 var coloredButtons = true
+var settingsVisible = false
+
+var trainingDone = false
+var settingsPressed = false
+var sliderPressed = false
+var shufflePressed = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,22 +35,25 @@ func _ready():
     screenSize = get_viewport_rect().size
     InitializeCells($SizeSlider.value, $SizeSlider.value)
     SetProgress()
-    $ShuffleButton.connect("button_up", self, "on_shuffle_pressed")
     $SizeSlider.connect("value_changed", self, "on_size_slider_changed")
-    $ShuffleConfirmationDialog.connect("confirmed", self, "Shuffle")
-    $ResizeCheckButton.connect("toggled", self, "on_resize_onoff_toggled") 
+    $ShuffleArea2D.connect("input_event", self, "on_shuffle_area_input")
+    $SettingsArea2D.connect("input_event", self, "on_settings_area_input")
+    $HandTimer.connect("timeout", self, "on_hand_timer_timeout")
     connect("playerWon", self, "on_player_won")
     
-    $ShuffleConfirmationDialog.dialog_text = ""
-    $ShuffleConfirmationDialog.get_node("RichTextLabel").text = "Confirm shuffle?\n"
-    $ShuffleConfirmationDialog.window_title = "Shuffle"
+    $SizeSlider.visible = false
+    $ShuffleArea2D.visible = false 
+    $TrophySprite.visible = false
+    
+    AdjustSize()
 
-    var shufDial_x0 = screenSize.x/2 - $ShuffleConfirmationDialog.rect_size.x/2
-    var shufDial_y0 = screenSize.y/2 - $ShuffleConfirmationDialog.rect_size.y/2
-    $ShuffleConfirmationDialog.rect_position = Vector2(shufDial_x0, shufDial_y0)
+    $HandSprite.visible = false
+    trainingDone = CheckTrainingCertificate()
+    if not trainingDone:    
+        $HandSprite.visible = true
+        PointToSettings()
+        
 
-    show_start_dialog()
- 
 func AdjustSize():
     x0 = 30
     butSize = int((screenSize.x - 2*x0) / n_x)
@@ -55,12 +65,11 @@ func AdjustSize():
     var pBar_y0 = y0 -  (n_y - 1) * butSize - $TextureProgress.rect_size.y - 20
     $TextureProgress.rect_position = Vector2(pBar_x0, pBar_y0)
     
-    var slider_x0 = x0 #screenSize.x/2 - $SizeSlider.rect_size.x/2
-    $ResizeCheckButton.rect_position.y = y0 + butSize + 10
-    $SizeSlider.rect_position.y = $ResizeCheckButton.rect_position.y + int(($ResizeCheckButton.rect_size.y - $SizeSlider.rect_size.y)/2)
-    $ShuffleButton.rect_position.y = $ResizeCheckButton.rect_position.y + $ResizeCheckButton.rect_size.y + 20
-        
+    $SettingsArea2D.position.y = y0 + butSize + 25
+    $SizeSlider.rect_position.y = $SettingsArea2D.position.y - $SizeSlider.rect_size.y/2
+    $ShuffleArea2D.position.y = $SettingsArea2D.position.y
 
+        
 func InitializeCells(n_x_, n_y_):
     DeleteAllCells()
 
@@ -162,7 +171,8 @@ func on_cell_ready_to_move(cell_number):
         SwapCells(cell_number, 0)
         
     SetProgress()
-    numberOfMoves += 1
+    if gameStarted:
+        IncreaseNumberOfMoves(1)
     $ChipSound.play()
     
 
@@ -252,7 +262,7 @@ func Shuffle():
     SetProgress(false)
     
     var i = 0
-    var min_iter = 20
+    var min_iter = 100
     while i < 10000:
         var dir = randi()%4
         #print(dir)
@@ -271,8 +281,28 @@ func Shuffle():
             break
 
     gameStarted = true
-    numberOfMoves = 0    
-        
+    SetNumberOfMoves(0)
+    ShowMoveHelper()
+
+
+func SetNumberOfMoves(num):
+    numberOfMoves = num
+    $TextureProgress/RichTextLabel.clear()
+    $TextureProgress/RichTextLabel.push_align(RichTextLabel.ALIGN_CENTER)
+    $TextureProgress/RichTextLabel.add_text(str(numberOfMoves))
+    $TextureProgress/RichTextLabel.pop()
+    
+func IncreaseNumberOfMoves(n):
+    numberOfMoves += n
+    var color = Color(1, 1, 1, 1)
+    if $TextureProgress.value > 50:
+        color = Color(0, 0, 0, 1)
+    $TextureProgress/RichTextLabel.clear()
+    $TextureProgress/RichTextLabel.push_align(RichTextLabel.ALIGN_CENTER)
+    $TextureProgress/RichTextLabel.push_color(color)
+    $TextureProgress/RichTextLabel.add_text(str(numberOfMoves))
+    $TextureProgress/RichTextLabel.pop()
+    $TextureProgress/RichTextLabel.pop()
 
 func SetProgress(emit_victory = true):
     var progress = 0
@@ -285,21 +315,17 @@ func SetProgress(emit_victory = true):
     $TextureProgress.value = progress * 100 / (ind_max + 1)
     if emit_victory and $TextureProgress.value == 100:
         emit_signal("playerWon")
-
-func on_shuffle_pressed():
-    print("shuffle pressed")
-    $ShuffleConfirmationDialog.show_modal(true)
     
 func on_size_slider_changed(value):
     print("size slider changed: ", value)
-    if $ResizeCheckButton.pressed:
-        InitializeCells(value, value)
-        gameStarted = false
-        SetProgress(false)
-    
-func on_resize_onoff_toggled(pressed):
-    print("resize toggled")
-    $SizeSlider.editable = pressed
+    InitializeCells(value, value)
+    gameStarted = false
+    SetProgress(false)
+    $TextureProgress/RichTextLabel.clear()
+    if not trainingDone and settingsPressed:
+        sliderPressed = true
+        PointToShuffle()
+
 
 func on_player_won():
     print("player won!")
@@ -307,6 +333,7 @@ func on_player_won():
         $WinSound.play()
         gameStarted = false
 
+        """
         var dialog = POPUPDIALOG.instance()
         dialog.dialog_text = ""
         dialog.get_node("RichTextLabel").text = "Awsome job! \nNumber of moves: " + str(numberOfMoves) + "\n"
@@ -320,6 +347,9 @@ func on_player_won():
         dialog.show_modal(true)
         yield(get_tree().create_timer(10), "timeout")
         dialog.queue_free()
+        """
+        
+        ShowTrophy()
         
 func show_start_dialog__():
     var dialog = STARTUPDIALOG.instance()
@@ -328,10 +358,11 @@ func show_start_dialog__():
     yield(get_tree().create_timer(5), "timeout")
     dialog.queue_free()
 
+
 func show_start_dialog():
     var dialog = POPUPDIALOG.instance()
     dialog.dialog_text = ""
-    dialog.get_node("RichTextLabel").text = "Slide the cells to the white spot to sort them out!\n"
+    dialog.get_node("RichTextLabel").text = "Shuffle and sort again by sliding the cells around the empty white spot!\n"
     dialog.window_title = "instructions"
 
     var dial_x0 = screenSize.x/2 - dialog.rect_size.x/2
@@ -343,3 +374,106 @@ func show_start_dialog():
     yield(get_tree().create_timer(15), "timeout")
     dialog.queue_free()
     
+func on_shuffle_area_input(viewport, event, shape_idx):
+    if event is InputEventScreenTouch:
+        if event.pressed:
+            Shuffle()
+            if not trainingDone and settingsPressed and sliderPressed:
+                shufflePressed = true
+                $HandTimer.stop()
+                $HandSprite.visible = false
+                trainingDone = true
+                RegisterTrainingCertificate()
+
+    
+func on_settings_area_input(viewport, event, shape_idx):
+    if event is InputEventScreenTouch:
+        if event.pressed:
+            settingsVisible = not settingsVisible
+            $SizeSlider.visible = settingsVisible
+            $ShuffleArea2D.visible = settingsVisible
+            if settingsVisible:
+                $SettingsArea2D/Sprite.texture = load("res://Game/images/settings_green.png")
+            else:
+                $SettingsArea2D/Sprite.texture = load("res://Game/images/settings_black.png")
+            
+            if not trainingDone and not settingsPressed:
+                settingsPressed = true
+                PointToSliderbar()
+  
+func ShowTrophy(stars=3, time=4):
+    $TrophySprite.visible = true
+    yield(get_tree().create_timer(time), "timeout")
+    $TrophySprite.visible = false
+
+
+func PointToSettings():
+    $HandSprite.position = $SettingsArea2D.position \
+                           + Vector2(-$HandSprite.texture.get_size().x/2, $HandSprite.texture.get_size().y/2)
+    $HandTimer.start()
+    
+func PointToShuffle():
+    $HandSprite.position = $ShuffleArea2D.position \
+                           + Vector2(-$HandSprite.texture.get_size().x/2, $HandSprite.texture.get_size().y/2)
+    $HandTimer.start()
+
+func PointToSliderbar():
+    $HandSprite.position = $SizeSlider.rect_position \
+                           + Vector2($SizeSlider.rect_size.x/2, $SizeSlider.rect_size.y/2) \
+                           + Vector2(-$HandSprite.texture.get_size().x/2, $HandSprite.texture.get_size().y/2)
+    $HandTimer.start()
+
+func on_hand_timer_timeout():
+    $HandSprite.visible = not $HandSprite.visible
+    
+func ShowMoveHelper():
+    var but_0 = cells[cellIndices[0]]
+        
+    var b_l = but_0.cell_left
+    var b_r = but_0.cell_right
+    var b_d = but_0.cell_down
+    var b_u = but_0.cell_up
+    
+    var bs = [b_d, b_l, b_u, b_r]
+    
+    for i in range(4):
+        var b = bs[i]
+        if b > 0:
+            var but = cells[cellIndices[b]]
+            print("setting left helper")
+            var sprite = MOVEHELPER.instance()
+            sprite.texture = load("res://Game/images/arrow.png")
+            sprite.position = but.rect_position + but.rect_size/2;
+            sprite.rotation_degrees = i * 90
+            sprite.z_index = 1
+            add_child(sprite)
+    
+func RegisterTrainingCertificate():
+    var file = File.new()
+    var filename = "user://onesim_numbersort.json"
+    file.open(filename, file.WRITE_READ)
+    if file.is_open():
+        file.store_string('{"trained":"yes"}')
+        file.close()
+    else:
+        print("error opening file")
+    
+func CheckTrainingCertificate():
+    var file = File.new()
+    var filename = "user://onesim_numbersort.json"
+    if file.file_exists(filename):
+        file.open(filename, file.READ)
+        if file.is_open():
+            var content = file.get_as_text()
+            print("file : ", content)
+            var json_res = JSON.parse(content)
+            if json_res.error == OK:
+                var cont_dic = json_res.result
+                if cont_dic.has("trained"):
+                    if cont_dic["trained"] == "yes":
+                        return true
+            else:
+                print("json error")
+        else:
+            print("error opening file")
+    return false
